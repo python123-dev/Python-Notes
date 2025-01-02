@@ -1,0 +1,81 @@
+class StudentDetails:
+    def __init__(self):
+        self.students = []  # List to store student dictionaries
+
+    def add_student(self, name, school, grade, roll):
+        """Add a new student."""
+        student = {
+            "name": name,
+            "school": school,
+            "grade": grade,
+            "roll": roll
+        }
+        self.students.append(student)
+
+    def remove_student(self, name):
+        """Remove a student by name."""
+        self.students = [student for student in self.students if student["name"] != name]
+
+    def update_student(self, key, old_value, new_value):
+        """
+        Update a specific field for a student.
+        :param key: The field to update (e.g., 'name', 'school').
+        :param old_value: The current value to search for.
+        :param new_value: The new value to replace the old value.
+        """
+        for student in self.students:
+            if student.get(key) == old_value:
+                student[key] = new_value
+
+    def display_students(self):
+        """Display all student details."""
+        for student in self.students:
+            print(student)
+
+
+class StudentMarks(StudentDetails):
+    def __init__(self):
+        super().__init__()
+        self.marks = {}  # Dictionary to store marks with student name as key
+
+    def add_marks(self, name, marks):
+        """
+        Add marks for a student.
+        :param name: Name of the student.
+        :param marks: Dictionary of subject: mark pairs.
+        """
+        if name not in [student['name'] for student in self.students]:
+            print(f"Student '{name}' not found. Please add the student first.")
+            return
+        self.marks[name] = marks
+
+    def display_student_with_marks(self):
+        """Display all students with their marks and total."""
+        for student in self.students:
+            name = student["name"]
+            print(student)  # Print student details
+            if name in self.marks:
+                print("Marks:", self.marks[name])
+                total_marks = sum(self.marks[name].values())
+                print(f"Total Marks: {total_marks}")
+            else:
+                print("Marks: No marks found.")
+            print()
+
+
+# Usage
+students = StudentMarks()
+
+# Add students
+students.add_student('abc', 'Little Angels', '3rd', 3001)
+students.add_student('abc1', 'Little Angels', '3rd', 3002)
+
+# Add marks for students
+students.add_marks('abc', {"Math": 85, "Science": 90, "English": 88})
+students.add_marks('abc1', {"Math": 78, "Science": 82, "English": 91})
+
+# Display all students with their marks
+print("Students with marks:")
+students.display_student_with_marks()
+
+
